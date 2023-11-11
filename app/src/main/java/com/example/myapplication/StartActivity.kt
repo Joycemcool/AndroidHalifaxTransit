@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -54,12 +55,14 @@ class StartActivity : AppCompatActivity() {
                     intent.putExtra("latitude", latitude)
                     intent.putExtra("longitude", longitude)
                     startActivity(intent)
+                    Log.i("Intent", "latitude and longitude are " + latitude.toString()+longitude.toString());
                 }
         } else {
             // Permission Denied - Ask the user for permission
             askPermission()
         }
     }//End getLocation function
+
     private fun askPermission() {
         // Display screen to request permission
         ActivityCompat.requestPermissions(
