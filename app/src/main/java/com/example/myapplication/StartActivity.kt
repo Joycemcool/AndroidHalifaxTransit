@@ -1,4 +1,5 @@
 package com.example.myapplication
+//First week submit Nov.12
 
 import android.Manifest
 import android.content.Intent
