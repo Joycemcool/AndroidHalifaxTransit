@@ -60,7 +60,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     //Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Location Services
@@ -68,5 +68,6 @@ dependencies {
 
     //Mapbox Maps SDK for Android
     implementation ("com.mapbox.maps:android:10.16.2")
-
+    //Add GTFS
+    implementation(group ="org.mobilitydata", name = "gtfs-realtime-bindings", version = "0.0.8")
 }

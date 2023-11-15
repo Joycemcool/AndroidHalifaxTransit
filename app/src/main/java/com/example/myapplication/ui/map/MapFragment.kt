@@ -1,15 +1,15 @@
-package com.example.myapplication.ui.home
+package com.example.myapplication.ui.map
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.databinding.FragmentHomeBinding
+import com.google.transit.realtime.GtfsRealtime.FeedMessage
+import java.net.URL
 
-class HomeFragment : Fragment() {
+class MapFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -33,5 +33,19 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+object GtfsRealtimeExample {
+    @Throws(Exception::class)
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+        val feed = FeedMessage.parseFrom(url.openStream())
+        for (entity in feed.entityList) {
+            if (entity.hasTripUpdate()) {
+                println(entity.tripUpdate)
+            }
+        }
     }
 }
