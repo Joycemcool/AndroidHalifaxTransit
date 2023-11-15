@@ -66,4 +66,7 @@ dependencies {
     // Location Services
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    //Mapbox Maps SDK for Android
+    implementation ("com.mapbox.maps:android:10.16.2")
+
 }

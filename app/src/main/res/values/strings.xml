@@ -3,4 +3,5 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoieGlhb3hpYTAwIiwiYSI6ImNscDA0ZGUwcTA1dDkyamxvbHUycW1udXUifQ.l6xdre156mFhlMfqqAjtiw</string>
 </resources>
