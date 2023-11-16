@@ -9,12 +9,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.transit.realtime.GtfsRealtime
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
+import java.net.URL
 
 
-
-var mapView: MapView? = null
+//var mapView: MapView? = null
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -33,8 +34,8 @@ class MainActivity : AppCompatActivity() {
         Log.i("Intent-Main", "latitude and longitude are " + latitude.toString()+longitude.toString());
 
 
-        mapView = findViewById(R.id.mapView)
-        mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
+//        mapView = findViewById(R.id.mapView)
+//        mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
         val navView: BottomNavigationView = binding.navView
 
@@ -50,23 +51,24 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    override fun onStart() {
-        super.onStart()
-        mapView?.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView?.onStop()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView?.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView?.onDestroy()
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        mapView?.onStart()
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        mapView?.onStop()
+//    }
+//
+//    override fun onLowMemory() {
+//        super.onLowMemory()
+//        mapView?.onLowMemory()
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        mapView?.onDestroy()
+//    }
 }
+
