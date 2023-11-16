@@ -12,7 +12,10 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
+import java.net.URL;
 
+import com.google.transit.realtime.GtfsRealtime.FeedEntity;
+import com.google.transit.realtime.GtfsRealtime.FeedMessage;
 
 class StartActivity : AppCompatActivity() {
 
@@ -25,8 +28,35 @@ class StartActivity : AppCompatActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+//        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+//        val feed = FeedMessage.parseFrom(url.openStream())//cannot proceed feed
+//        // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
+//        for (entity in feed.entityList) {
+//            if (entity.hasTripUpdate()) {
+//                Log.i("entity realtime", "latitude and longitude are " +entity.tripUpdate);
+//                println(entity.tripUpdate)
+//            }
+//        }
         getLocation();
+
     }
+
+//    object GtfsRealtimeExample {
+//    @Throws(Exception::class)
+//    @JvmStatic
+//    fun loadRealtimeData() {
+//        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+//        val feed = FeedMessage.parseFrom(url.openStream())
+//       // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
+//        for (entity in feed.entityList) {
+//            if (entity.hasTripUpdate()) {
+//                Log.i("entity realtime", "latitude and longitude are " +entity.tripUpdate);
+//                println(entity.tripUpdate)
+//            }
+//        }
+//        //return tripUpdates
+//    }
+//}
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
