@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -25,6 +26,27 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        // Allow network operations on the main thread
+//        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+//        StrictMode.setThreadPolicy(policy)
+//
+//        //
+//        //GTFS-realtime Language Binding
+//        //
+//        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+//        val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
+//        // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
+//        for (entity in feed.entityList) {
+//           // Log.i("TRIP" + "id" + entity.id.toString())
+//            Log.i("TRIP", "longitude" + entity.id + entity.vehicle.position.longitude);
+//            Log.i("TRIP", "latitude" + entity.id + entity.vehicle.position.latitude);
+//            if (entity.hasTripUpdate()) {
+//                Log.i("entity realtime", "latitude and longitude are " + entity.tripUpdate);
+//                Log.i("ENTITY", "oK");
+//            }
+//        }
+
 
         // Get location from Start Activity
         val intent = intent

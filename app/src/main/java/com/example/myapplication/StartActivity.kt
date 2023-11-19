@@ -5,6 +5,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -12,10 +13,9 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
-import java.net.URL;
-
-import com.google.transit.realtime.GtfsRealtime.FeedEntity;
-import com.google.transit.realtime.GtfsRealtime.FeedMessage;
+import com.google.transit.realtime.GtfsRealtime
+import com.google.transit.realtime.GtfsRealtime.FeedMessage
+import java.net.URL
 
 class StartActivity : AppCompatActivity() {
 
@@ -27,17 +27,27 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-//        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
-//        val feed = FeedMessage.parseFrom(url.openStream())//cannot proceed feed
-//        // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
-//        for (entity in feed.entityList) {
-//            if (entity.hasTripUpdate()) {
-//                Log.i("entity realtime", "latitude and longitude are " +entity.tripUpdate);
-//                println(entity.tripUpdate)
-//            }
-//        }
         getLocation();
+
+        // Allow network operations on the main thread
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
+        //
+        //GTFS-realtime Language Binding
+        //
+        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+        val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
+        // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
+        for (entity in feed.entityList) {
+            // Log.i("TRIP" + "id" + entity.id.toString())
+            Log.i("TRIP", "longitude - StartActivity" + entity.id + entity.vehicle.position.longitude);
+            Log.i("TRIP", "latitude" + entity.id + entity.vehicle.position.latitude);
+            if (entity.hasTripUpdate()) {
+                Log.i("entity realtime", "latitude and longitude are " + entity.tripUpdate);
+                Log.i("ENTITY", "oK");
+            }
+        }
 
     }
 
