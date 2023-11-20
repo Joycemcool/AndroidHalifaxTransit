@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    android:label="@string/title_map"
+    app:startDestination="@id/navigation_map">
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_map"
         android:name="com.example.myapplication.ui.map.MapFragment"
-        android:label="@string/title_home"
+        android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.myapplication.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_routes"
+        android:name="com.example.myapplication.ui.dashboard.RoutesFragment"
+        android:label="@string/title_routes"
+        tools:layout="@layout/fragment_routes" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.myapplication.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_alerts"
+        android:name="com.example.myapplication.ui.notifications.AlertsFragment"
+        android:label="@string/title_alerts"
+        tools:layout="@layout/fragment_alerts" />
 </navigation>

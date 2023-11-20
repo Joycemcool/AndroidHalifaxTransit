@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.os.StrictMode
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,10 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.transit.realtime.GtfsRealtime
-import com.mapbox.maps.MapView
-import com.mapbox.maps.Style
-import java.net.URL
 
 
 //var mapView: MapView? = null
@@ -66,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_map, R.id.navigation_routes, R.id.navigation_alerts
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
