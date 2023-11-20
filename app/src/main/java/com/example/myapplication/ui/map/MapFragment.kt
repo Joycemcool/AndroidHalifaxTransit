@@ -1,30 +1,39 @@
 package com.example.myapplication.ui.map
 
+
 //import com.example.myapplication.mapView
 
+
+//ViewAnnotationBasic
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.FragmentMapBinding
-import com.google.transit.realtime.GtfsRealtime
-import com.google.transit.realtime.GtfsRealtime.FeedMessage
 import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
-import java.net.URL
-
+import com.mapbox.maps.viewannotation.ViewAnnotationManager
+//End example
 
 var mapView: MapView? = null
 class MapFragment : Fragment() {
     private var mapView: MapView? = null
     private var _binding: FragmentMapBinding? = null
 
+    //viewAnnotationExample
+    private lateinit var mapboxMap: MapboxMap
+    private lateinit var viewAnnotationManager: ViewAnnotationManager
+    private val viewAnnotationViews = mutableListOf<View>()
+    //end
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
+//    val viewAnnotationManager: AnnotationManager
+//        get() = binding.mapView.viewAnnotationManager
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,24 +47,21 @@ class MapFragment : Fragment() {
 
         //Mapbox.getInstance(requireContext(), mapboxAccessToken)
         mapView = binding.mapView;
-//        mapView?.getMapAsync { mapboxMap ->
-//            mapboxMap.setStyle(Style.MAPBOX_STREETS) {
-//                // Your map style initialization code here
-//                GtfsRealtimeExample(); // Call your function here
-//            }
-//        }
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
+        viewAnnotationManager = binding.mapView.viewAnnotationManager
+
+//    https://docs.mapbox.com/android/maps/examples/view-annotation-basic-add/
 
         return root
     }
 
     //
+    //Add a view annotation to the mapview
     //
 
 
-    //
-    //
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -84,21 +90,3 @@ class MapFragment : Fragment() {
 
 
 }
-
-//object GtfsRealtimeExample {
-//    @Throws(Exception::class)
-//    @JvmStatic
-//    fun loadRealtimeData(): List<GtfsRealtime.TripUpdate> {
-//        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
-//        val feed = FeedMessage.parseFrom(url.openStream())
-//       // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
-//        for (entity in feed.entityList) {
-//            if (entity.hasTripUpdate()) {
-//                Log.i("entity realtime", "latitude and longitude are " +entity.tripUpdate);
-//                println(entity.tripUpdate)
-//            }
-//        }
-//        //return tripUpdates
-//    }
-//}
-

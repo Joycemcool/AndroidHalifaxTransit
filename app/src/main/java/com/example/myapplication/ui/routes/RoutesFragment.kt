@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.dashboard
+package com.example.myapplication.ui.routes
 
 import android.os.Bundle
 import android.view.LayoutInflater
