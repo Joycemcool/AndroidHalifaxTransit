@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
         Log.i("Intent-Main", "latitude and longitude are " + latitude.toString()+longitude.toString());
 
 
-//        mapView = findViewById(R.id.mapView)
-//        mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
+
 
         val navView: BottomNavigationView = binding.navView
 

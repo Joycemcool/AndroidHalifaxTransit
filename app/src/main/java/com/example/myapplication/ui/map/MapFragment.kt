@@ -2,19 +2,6 @@ package com.example.myapplication.ui.map
 
 
 //import com.example.myapplication.mapView
-import android.annotation.SuppressLint
-
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.mapbox.geojson.Point
-import com.mapbox.maps.*
-import com.mapbox.maps.plugin.animation.flyTo
-import com.mapbox.maps.plugin.gestures.*
-import com.mapbox.maps.viewannotation.ViewAnnotationUpdateMode
-import com.mapbox.maps.viewannotation.viewAnnotationOptions
 
 
 //ViewAnnotationBasic
@@ -26,10 +13,15 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.databinding.LayoutAnnotationBinding
+import com.google.transit.realtime.GtfsRealtime
+import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
 import com.mapbox.maps.viewannotation.ViewAnnotationManager
+import com.mapbox.maps.viewannotation.viewAnnotationOptions
+import java.net.URL
+
 //End example
 
 var mapView: MapView? = null
@@ -75,12 +67,22 @@ class MapFragment : Fragment() {
             loadStyleUri(Style.MAPBOX_STREETS) {
                 // Get the center point of the map
                 val center = mapboxMap.cameraState.center
-                // Add the view annotation at the center point
-                addViewAnnotation(center)
-            }
-    }
-//    https://docs.mapbox.com/android/maps/examples/view-annotation-basic-add/
 
+                // Add the view annotation at the center point
+                val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+                val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
+
+                for (entity in feed.entityList) {
+                    val routeNum = entity.vehicle.vehicle.id
+                    val longitude = entity.vehicle.position.longitude
+                    val latitude = entity.vehicle.position.latitude
+                    val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
+                    addViewAnnotation(point)
+
+                }
+
+            }
+        }
         return root
     }
 
@@ -93,6 +95,7 @@ class MapFragment : Fragment() {
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             // Specify the layout resource id
             resId = R.layout.layout_annotation,
+//            R.layout.layout_annotation.
             // Set any view annotation options
             options = viewAnnotationOptions {
                 geometry(point)

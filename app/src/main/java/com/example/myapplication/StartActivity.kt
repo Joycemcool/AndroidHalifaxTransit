@@ -13,10 +13,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
-import com.google.transit.realtime.GtfsRealtime
-import com.google.transit.realtime.GtfsRealtime.FeedMessage
-import java.net.URL
-
 class StartActivity : AppCompatActivity() {
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
@@ -33,40 +29,33 @@ class StartActivity : AppCompatActivity() {
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        //
-        //GTFS-realtime Language Binding
-        //
-        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
-        val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
-        // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
-        for (entity in feed.entityList) {
-            // Log.i("TRIP" + "id" + entity.id.toString())
-            Log.i("TRIP", "longitude - StartActivity" + entity.id + entity.vehicle.position.longitude);
-            Log.i("TRIP", "latitude" + entity.id + entity.vehicle.position.latitude);
-            if (entity.hasTripUpdate()) {
-                Log.i("entity realtime", "latitude and longitude are " + entity.tripUpdate);
-                Log.i("ENTITY", "oK");
-            }
-        }
+//        //
+//        //GTFS-realtime Language Binding
+//        //
+//        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+//        val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
+//        // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
+//        val intentList = ArrayList<Intent>()
+//        for (entity in feed.entityList) {
+//            // Log.i("TRIP" + "id" + entity.id.toString())
+//            Log.i("TRIP", "longitude - StartActivity" + entity.id + entity.vehicle.position.longitude);
+//            Log.i("TRIP", "latitude" + entity.id + entity.vehicle.position.latitude);
+//            val intent = Intent(this, MainActivity::class.java)
+//            intent.putExtra("latitude", entity.vehicle.position.longitude)
+//            intent.putExtra("longitude", entity.vehicle.position.latitude)
+//            if (entity.hasTripUpdate()) {
+//                Log.i("entity realtime", "latitude and longitude are " + entity.tripUpdate);
+//                Log.i("ENTITY", "oK");
+//            }
+//            intentList.add(intent)
+//        }
+//        val mainIntent = Intent(this, MainActivity::class.java)
+//        mainIntent.putParcelableArrayListExtra("intent_list", intentList)
+//        startActivity(mainIntent)
+//
+//        startActivity(intent)
 
     }
-
-//    object GtfsRealtimeExample {
-//    @Throws(Exception::class)
-//    @JvmStatic
-//    fun loadRealtimeData() {
-//        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
-//        val feed = FeedMessage.parseFrom(url.openStream())
-//       // val tripUpdates = mutableListOf<GtfsRealtime.TripUpdate>()
-//        for (entity in feed.entityList) {
-//            if (entity.hasTripUpdate()) {
-//                Log.i("entity realtime", "latitude and longitude are " +entity.tripUpdate);
-//                println(entity.tripUpdate)
-//            }
-//        }
-//        //return tripUpdates
-//    }
-//}
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

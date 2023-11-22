@@ -70,4 +70,7 @@ dependencies {
     implementation ("com.mapbox.maps:android:10.16.2")
     //Add GTFS
     implementation(group ="org.mobilitydata", name = "gtfs-realtime-bindings", version = "0.0.8")
+
+    //Google Maps dndroid API dependancy
+    implementation("com.google.android.gms:play-services-maps:17.0.1")
 }
