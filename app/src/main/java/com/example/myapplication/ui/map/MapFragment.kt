@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
@@ -39,8 +40,7 @@ class MapFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-//    val viewAnnotationManager: AnnotationManager
-//        get() = binding.mapView.viewAnnotationManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,7 +66,7 @@ class MapFragment : Fragment() {
             // Load a map style
             loadStyleUri(Style.MAPBOX_STREETS) {
                 // Get the center point of the map
-                val center = mapboxMap.cameraState.center
+                //val center = mapboxMap.cameraState.center
 
                 // Add the view annotation at the center point
                 val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
@@ -78,7 +78,7 @@ class MapFragment : Fragment() {
                     val latitude = entity.vehicle.position.latitude
                     val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
                     addViewAnnotation(point)
-
+//                    updateTextView(routeNum.toString())
                 }
 
             }
@@ -95,7 +95,7 @@ class MapFragment : Fragment() {
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             // Specify the layout resource id
             resId = R.layout.layout_annotation,
-//            R.layout.layout_annotation.
+
             // Set any view annotation options
             options = viewAnnotationOptions {
                 geometry(point)
@@ -103,7 +103,15 @@ class MapFragment : Fragment() {
         )
 
         LayoutAnnotationBinding.bind(viewAnnotation)
+
     }
+
+    private fun updateTextView(routeId: String) {
+        // Access TextView directly from the binding class
+        val textView : TextView? = view?.findViewById(R.id.annotationRoute)
+        textView?.text = routeId;
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
