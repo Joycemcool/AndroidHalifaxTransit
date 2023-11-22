@@ -2,6 +2,19 @@ package com.example.myapplication.ui.map
 
 
 //import com.example.myapplication.mapView
+import android.annotation.SuppressLint
+
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.mapbox.geojson.Point
+import com.mapbox.maps.*
+import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.gestures.*
+import com.mapbox.maps.viewannotation.ViewAnnotationUpdateMode
+import com.mapbox.maps.viewannotation.viewAnnotationOptions
 
 
 //ViewAnnotationBasic
@@ -10,7 +23,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
+import com.example.myapplication.databinding.LayoutAnnotationBinding
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
@@ -22,7 +37,7 @@ class MapFragment : Fragment() {
     private var mapView: MapView? = null
     private var _binding: FragmentMapBinding? = null
 
-    //viewAnnotationExample
+    //Add the view annotation on view load
     private lateinit var mapboxMap: MapboxMap
     private lateinit var viewAnnotationManager: ViewAnnotationManager
     private val viewAnnotationViews = mutableListOf<View>()
@@ -40,6 +55,9 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+    //From view annotation example
+        super.onCreate(savedInstanceState)
+
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -49,8 +67,18 @@ class MapFragment : Fragment() {
         mapView = binding.mapView;
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
+        // Create view annotation manager
         viewAnnotationManager = binding.mapView.viewAnnotationManager
 
+        mapboxMap = binding.mapView.getMapboxMap().apply {
+            // Load a map style
+            loadStyleUri(Style.MAPBOX_STREETS) {
+                // Get the center point of the map
+                val center = mapboxMap.cameraState.center
+                // Add the view annotation at the center point
+                addViewAnnotation(center)
+            }
+    }
 //    https://docs.mapbox.com/android/maps/examples/view-annotation-basic-add/
 
         return root
@@ -60,7 +88,19 @@ class MapFragment : Fragment() {
     //Add a view annotation to the mapview
     //
 
+    private fun addViewAnnotation(point: Point) {
+        // Define the view annotation
+        val viewAnnotation = viewAnnotationManager.addViewAnnotation(
+            // Specify the layout resource id
+            resId = R.layout.layout_annotation,
+            // Set any view annotation options
+            options = viewAnnotationOptions {
+                geometry(point)
+            }
+        )
 
+        LayoutAnnotationBinding.bind(viewAnnotation)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
