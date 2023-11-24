@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="3dp"
-        android:text="RouteId"
+        android:text="1"
         android:textColor="#F6F0F0"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

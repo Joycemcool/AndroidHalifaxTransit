@@ -6,6 +6,7 @@ package com.example.myapplication.ui.map
 
 //ViewAnnotationBasic
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ var mapView: MapView? = null
 class MapFragment : Fragment() {
     private var mapView: MapView? = null
     private var _binding: FragmentMapBinding? = null
+    private lateinit var view: View
 
     //Add the view annotation on view load
     private lateinit var mapboxMap: MapboxMap
@@ -53,6 +55,8 @@ class MapFragment : Fragment() {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+//        view = inflater.inflate(R.layout.layout_annotation, container, false)
+
         binding.textHome.text = "This is the Home fragment"
 
         //Mapbox.getInstance(requireContext(), mapboxAccessToken)
@@ -73,14 +77,21 @@ class MapFragment : Fragment() {
                 val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
 
                 for (entity in feed.entityList) {
-                    val routeNum = entity.vehicle.vehicle.id
-                    val longitude = entity.vehicle.position.longitude
-                    val latitude = entity.vehicle.position.latitude
-                    val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
-                    addViewAnnotation(point)
-//                    updateTextView(routeNum.toString())
-                }
+                    if(entity.hasVehicle()){
+                        val tripUpdate = entity.vehicle.trip
+                        val longitude = entity.vehicle.position.longitude
+                        val latitude = entity.vehicle.position.latitude
+                        val routeId = entity.vehicle.trip.routeId;
+                        val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
+//                        view = inflater.inflate(R.layout.layout_annotation, container, false)
+//                        val textViewAnnotation: TextView = view.findViewById(R.id.annotationRoute)
+//                        Log.i("TextView",textViewAnnotation.text.toString())
+//                        textViewAnnotation.text=routeId
+                        addViewAnnotation(point,routeId)
+//                        Log.i("RouteID",routeId)
 
+                    }
+                }
             }
         }
         return root
@@ -90,7 +101,7 @@ class MapFragment : Fragment() {
     //Add a view annotation to the mapview
     //
 
-    private fun addViewAnnotation(point: Point) {
+    private fun addViewAnnotation(point: Point, string: String) {
         // Define the view annotation
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             // Specify the layout resource id
@@ -101,16 +112,12 @@ class MapFragment : Fragment() {
                 geometry(point)
             }
         )
-
-        LayoutAnnotationBinding.bind(viewAnnotation)
+        val binding = LayoutAnnotationBinding.bind(viewAnnotation)
+//        LayoutAnnotationBinding.bind(viewAnnotation)
+        binding.annotationRoute.text = string
 
     }
 
-    private fun updateTextView(routeId: String) {
-        // Access TextView directly from the binding class
-        val textView : TextView? = view?.findViewById(R.id.annotationRoute)
-        textView?.text = routeId;
-    }
 
 
     override fun onDestroyView() {
