@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
@@ -59,7 +58,20 @@ class MapFragment : Fragment() {
 
         binding.textHome.text = "This is the Home fragment"
 
-        //Mapbox.getInstance(requireContext(), mapboxAccessToken)
+//        if(arguments!=null){
+            val latitude = arguments?.getDouble("latitude", 0.0)
+            val longitude = arguments?.getDouble("longitude", 0.0)
+            Log.i("Passtomagfragment",latitude.toString())
+//        }
+        //Get mobile location from mainActivity
+        //Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
+//        val initialCameraOptions = CameraOptions.Builder()
+//            .center( Point.fromLngLat(longitude?.toDouble()?:0.0,latitude?.toDouble()?:0.0)
+//            .pitch(45.0)
+//            .zoom(15.5)
+//            .bearing(-17.6)
+//            .build()
+
         mapView = binding.mapView;
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
@@ -69,8 +81,10 @@ class MapFragment : Fragment() {
         mapboxMap = binding.mapView.getMapboxMap().apply {
             // Load a map style
             loadStyleUri(Style.MAPBOX_STREETS) {
+
                 // Get the center point of the map
                 //val center = mapboxMap.cameraState.center
+//                val center = LngLat(-73.9397, 40.8002);
 
                 // Add the view annotation at the center point
                 val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
@@ -88,12 +102,22 @@ class MapFragment : Fragment() {
 //                        Log.i("TextView",textViewAnnotation.text.toString())
 //                        textViewAnnotation.text=routeId
                         addViewAnnotation(point,routeId)
-//                        Log.i("RouteID",routeId)
+
 
                     }
                 }
             }
         }
+
+
+
+//        if (args != null) {
+//            val latitude = args.getDouble("latitude", 0.0)
+//            val longitude = args.getDouble("longitude", 0.0)
+//            Log.i("Passtomagfragment","latitude.toString()")
+//            Log.i("Passtomagfragment",latitude.toString())
+//        }
+
         return root
     }
 
