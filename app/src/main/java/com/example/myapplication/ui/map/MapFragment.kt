@@ -16,6 +16,8 @@ import com.example.myapplication.databinding.FragmentMapBinding
 import com.example.myapplication.databinding.LayoutAnnotationBinding
 import com.google.transit.realtime.GtfsRealtime
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
@@ -58,21 +60,22 @@ class MapFragment : Fragment() {
 
         binding.textHome.text = "This is the Home fragment"
 
-//        if(arguments!=null){
-            val latitude = arguments?.getDouble("latitude", 0.0)
-            val longitude = arguments?.getDouble("longitude", 0.0)
-            Log.i("Passtomagfragment",latitude.toString())
-//        }
+        val latitude = arguments?.getDouble("latitude", 0.0)
+        val longitude = arguments?.getDouble("longitude", 0.0)
+        Log.i("Passtomagfragment",latitude.toString())
+
         //Get mobile location from mainActivity
-        //Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
-//        val initialCameraOptions = CameraOptions.Builder()
-//            .center( Point.fromLngLat(longitude?.toDouble()?:0.0,latitude?.toDouble()?:0.0)
-//            .pitch(45.0)
-//            .zoom(15.5)
-//            .bearing(-17.6)
-//            .build()
+
+        val initialCameraOptions = CameraOptions.Builder()
+            .center( Point.fromLngLat(longitude?:0.0,latitude?:0.0))
+            .pitch(45.0)
+            .zoom(15.5)
+            .bearing(-17.6)
+            .build()
+
 
         mapView = binding.mapView;
+        mapView?.getMapboxMap()?.setCamera(initialCameraOptions);
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
         // Create view annotation manager
