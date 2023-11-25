@@ -24,6 +24,9 @@ class RoutesFragment : Fragment() {
         _binding = FragmentRoutesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+
+
         binding.textDashboard.text ="This is the Routes fragment"
         return root
     }

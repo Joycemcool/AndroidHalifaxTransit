@@ -9,6 +9,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
 
 
 //var mapView: MapView? = null
@@ -31,9 +34,6 @@ class MainActivity : AppCompatActivity() {
         val currentLocation = "$latitude,$longitude"
         Log.i("Intent-Main", "latitude and longitude are " + latitude.toString()+longitude.toString());
 
-
-
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -55,6 +55,28 @@ class MainActivity : AppCompatActivity() {
 
         navController.navigate(R.id.navigation_map, bundle)
     }
+
+//    private fun readTransitNumbersFromFile(fileName: String): List<String> {
+//    val transitNumbers = mutableListOf<String>()
+//
+//    try {
+//        // Open the file from the assets folder
+//        val inputStream = assets.open(fileName)
+//        val reader = BufferedReader(InputStreamReader(inputStream))
+//
+//        // Read each line, extract the first number, and add it to the list
+//        reader.useLines { lines ->
+//            lines.forEach { line ->
+//                val transitNumber = line.split(",")[0].trim()
+//                transitNumbers.add(transitNumber)
+//            }
+//        }
+//    } catch (e: Exception) {
+//        e.printStackTrace()
+//    }
+//
+//    return transitNumbers
+//}
 
 }
 

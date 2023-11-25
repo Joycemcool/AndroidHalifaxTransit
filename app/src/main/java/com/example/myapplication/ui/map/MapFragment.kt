@@ -58,7 +58,7 @@ class MapFragment : Fragment() {
 
 //        view = inflater.inflate(R.layout.layout_annotation, container, false)
 
-        binding.textHome.text = "This is the Home fragment"
+//        binding.textHome.text = "This is the Home fragment"
 
         val latitude = arguments?.getDouble("latitude", 0.0)
         val longitude = arguments?.getDouble("longitude", 0.0)
@@ -72,7 +72,6 @@ class MapFragment : Fragment() {
             .zoom(15.5)
             .bearing(-17.6)
             .build()
-
 
         mapView = binding.mapView;
         mapView?.getMapboxMap()?.setCamera(initialCameraOptions);
@@ -112,14 +111,6 @@ class MapFragment : Fragment() {
             }
         }
 
-
-
-//        if (args != null) {
-//            val latitude = args.getDouble("latitude", 0.0)
-//            val longitude = args.getDouble("longitude", 0.0)
-//            Log.i("Passtomagfragment","latitude.toString()")
-//            Log.i("Passtomagfragment",latitude.toString())
-//        }
 
         return root
     }
