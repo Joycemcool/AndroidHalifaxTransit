@@ -4,7 +4,7 @@
     <string name="title_routes">Routes</string>
     <string name="title_alerts">Alerts</string>
     <string name="mapbox_access_token">pk.eyJ1IjoieGlhb3hpYTAwIiwiYSI6ImNscDA0ZGUwcTA1dDkyamxvbHUycW1udXUifQ.l6xdre156mFhlMfqqAjtiw</string>
-    <array name="transit_numbers_array">
+    <string-array name="transit_numbers_array">
             <item>1</item>
             <item>10</item>
             <item>123</item>
@@ -83,5 +83,5 @@
             <item>9B</item>
             <item>FerD</item>
             <item>FerW</item>
-    </array>
+    </string-array>
 </resources>
