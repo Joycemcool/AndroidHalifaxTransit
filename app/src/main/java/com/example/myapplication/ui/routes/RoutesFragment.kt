@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
@@ -14,10 +15,8 @@ import com.example.myapplication.databinding.FragmentRoutesBinding
 class RoutesFragment : Fragment() {
 
     private var _binding: FragmentRoutesBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private var routeNumber : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,20 +41,14 @@ class RoutesFragment : Fragment() {
         //
         //SetOnItemClickListener for autocompleteTextView
         //
-//        autoTransitNum.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(
-//                AdapterView<?> parent, View view,
-//                int position, long id) {
-//                selectedPokemon = adapter.getItem(position).toString();
-//
-//            }
-//        });//End autocompletetextview onitemclick
+        autoTransitNum.setOnItemClickListener {parent,view, position,id ->
+           // var routeNumber : String;
+            routeNumber=(adapter.getItem(position)?:"").toString()
+            binding.textViewMyroutes.text = routeNumber
+        }
 
 
-//    else {
-//        Log.e("ResponseError", "Response not successful. Status code: " + response.code());
-//    }
+
 
         binding.textDashboard.text ="This is the Routes fragment"
         return root
