@@ -38,7 +38,25 @@ class RoutesFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,transitRoutesArray)
         autoTransitNum.setAdapter(adapter)
         autoTransitNum.threshold=1
-       
+
+        //
+        //SetOnItemClickListener for autocompleteTextView
+        //
+//        autoTransitNum.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(
+//                AdapterView<?> parent, View view,
+//                int position, long id) {
+//                selectedPokemon = adapter.getItem(position).toString();
+//
+//            }
+//        });//End autocompletetextview onitemclick
+
+
+//    else {
+//        Log.e("ResponseError", "Response not successful. Status code: " + response.code());
+//    }
+
         binding.textDashboard.text ="This is the Routes fragment"
         return root
     }
