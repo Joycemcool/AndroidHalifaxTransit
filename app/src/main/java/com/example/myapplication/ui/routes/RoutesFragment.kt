@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.transition.Visibility.Mode
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRoutesBinding
 import java.io.File
@@ -35,23 +36,14 @@ class RoutesFragment : Fragment() {
         //
         val autoTransitNum = binding.autoCompleteTextViewSearch
         val transitRoutesArray : Array<String> = resources.getStringArray((R.array.transit_numbers_array))
-        Log.i("ReadFromString",transitRoutesArray.toString())
-
         val adapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,transitRoutesArray)
         autoTransitNum.setAdapter(adapter)
         autoTransitNum.threshold=1
 
+        //Create empty file in internal storage if it doesn't exist
 
-        //Create empty file in internal storage
         val filename = "myRoute"
-        context?.openFileOutput(filename, Context.MODE_PRIVATE).use {      }
-
-        // Create the file and write some test data
-        context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
-            val testData = listOf("One", "Two", "Three")
-            it.write(testData.joinToString("\n").toByteArray())
-        }
-
+        //Read content if file exist
         val fileContents : List<String>
         fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
                 lines.map {it.toString() }
@@ -68,9 +60,8 @@ class RoutesFragment : Fragment() {
                 textView.text = line
                 linearLayoutMyRoutes.addView(textView)
             }
-        } else {
-            // The file is empty or doesn't exist
-            println("File is empty or doesn't exist.")
+        }else{
+            context?.openFileOutput(filename, Context.MODE_APPEND).use {      }
         }
 
         //
@@ -79,26 +70,19 @@ class RoutesFragment : Fragment() {
         autoTransitNum.setOnItemClickListener {parent,view, position,id ->
            // var routeNumber : String;
             routeNumber=(adapter.getItem(position)?:"").toString()
-            binding.textViewMyroutes.text = routeNumber
+//            binding.textViewMyroutes.text = routeNumber
+            binding.buttonAdd.setOnClickListener {
+                //Append selected route to file
+                context?.openFileOutput(filename, Context.MODE_APPEND)?.use {
+                    it.write(routeNumber!!.toByteArray())
+                    it.write("\n".toByteArray())
+                    val textView = TextView(requireContext())
+                    textView.text = routeNumber
+                    linearLayoutMyRoutes.addView(textView)
+                }
+            }
+        }//End autocompletetext view
 
-
-//            if(routeNumber!=null){
-//
-//
-//                val fileContents = routeNumber
-//
-//
-//                context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
-//                    it?.write(fileContents?.toByteArray())
-//                }
-//            }
-
-        }
-
-
-
-
-       // binding.textDashboard.text ="This is the Routes fragment"
         return root
     }
 
