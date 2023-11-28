@@ -5,6 +5,8 @@ package com.example.myapplication.ui.map
 
 
 //ViewAnnotationBasic
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
@@ -117,13 +121,13 @@ class MapFragment : Fragment() {
                         val latitude = entity.vehicle.position.latitude
                         val routeId = entity.vehicle.trip.routeId;
                         val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
-//                        view = inflater.inflate(R.layout.layout_annotation, container, false)
-//                        val textViewAnnotation: TextView = view.findViewById(R.id.annotationRoute)
 
-//                        textViewAnnotation.text=routeId
-                        addViewAnnotation(point,routeId)
-
-
+                        // Check if routeId exists in fileContents
+                        val isRouteIdExist = fileContents.contains(routeId)
+                        if (isRouteIdExist){
+                            addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
+                        }else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
+                        }
                     }
                 }
             }
@@ -137,7 +141,7 @@ class MapFragment : Fragment() {
     //Add a view annotation to the mapview
     //
 
-    private fun addViewAnnotation(point: Point, routeId: String) {
+    private fun addViewAnnotation(point: Point, routeId: String, drawableId : Int) {
         // Define the view annotation
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             // Specify the layout resource id
@@ -147,6 +151,9 @@ class MapFragment : Fragment() {
                 geometry(point)
             }
         )
+        val backgroudView =viewAnnotation.findViewById<ConstraintLayout>(R.id.annotationLayout)
+        val backgroudColor = ContextCompat.getDrawable(requireContext(),drawableId)
+        backgroudView.background = backgroudColor
         val textViewAnnotation= viewAnnotation.findViewById<TextView>(R.id.annotationRoute)
         textViewAnnotation.text=routeId
     }
