@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentRoutesBinding
@@ -40,7 +42,7 @@ class RoutesFragment : Fragment() {
         autoTransitNum.threshold=1
 
 
-        //Create file in internal storage
+        //Create empty file in internal storage
         val filename = "myRoute"
         context?.openFileOutput(filename, Context.MODE_PRIVATE).use {      }
 
@@ -57,10 +59,14 @@ class RoutesFragment : Fragment() {
                     .toList()
             } ?: emptyList()
 
+        val linearLayoutMyRoutes: LinearLayout = binding.linearLayoutMyRoutes
+
         if (fileContents.isNotEmpty()) {
             // Test data is in 'fileContents'
             for (line in fileContents) {
-                println(line)
+                val textView = TextView(requireContext())
+                textView.text = line
+                linearLayoutMyRoutes.addView(textView)
             }
         } else {
             // The file is empty or doesn't exist
