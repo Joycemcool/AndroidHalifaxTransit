@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMapBinding
@@ -62,10 +64,8 @@ class MapFragment : Fragment() {
 
         val latitude = arguments?.getDouble("latitude", 0.0)
         val longitude = arguments?.getDouble("longitude", 0.0)
-        Log.i("Passtomagfragment",latitude.toString())
 
         //Get mobile location from mainActivity
-
         val initialCameraOptions = CameraOptions.Builder()
             .center( Point.fromLngLat(longitude?:0.0,latitude?:0.0))
             .pitch(45.0)
@@ -73,20 +73,38 @@ class MapFragment : Fragment() {
             .bearing(-17.6)
             .build()
 
+        //Center map location
         mapView = binding.mapView;
         mapView?.getMapboxMap()?.setCamera(initialCameraOptions);
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
+        //Retrieve myRoutes file content from internal storage
+        val filename = "myRoute"
+        //Read content if file exist
+        val fileContents : List<String>
+        fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+            lines.map {it.toString() }
+                .filterNotNull()
+                .toList()
+        } ?: emptyList()
+
+
+
+        if (fileContents.isNotEmpty()) {
+            // Test data is in 'fileContents'
+            for (line in fileContents) {
+                val textView = TextView(requireContext())
+
+            }
+        }
+
+
+
         // Create view annotation manager
         viewAnnotationManager = binding.mapView.viewAnnotationManager
-
         mapboxMap = binding.mapView.getMapboxMap().apply {
             // Load a map style
             loadStyleUri(Style.MAPBOX_STREETS) {
-
-                // Get the center point of the map
-                //val center = mapboxMap.cameraState.center
-//                val center = LngLat(-73.9397, 40.8002);
 
                 // Add the view annotation at the center point
                 val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
@@ -101,7 +119,7 @@ class MapFragment : Fragment() {
                         val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
 //                        view = inflater.inflate(R.layout.layout_annotation, container, false)
 //                        val textViewAnnotation: TextView = view.findViewById(R.id.annotationRoute)
-//                        Log.i("TextView",textViewAnnotation.text.toString())
+
 //                        textViewAnnotation.text=routeId
                         addViewAnnotation(point,routeId)
 
@@ -119,21 +137,18 @@ class MapFragment : Fragment() {
     //Add a view annotation to the mapview
     //
 
-    private fun addViewAnnotation(point: Point, string: String) {
+    private fun addViewAnnotation(point: Point, routeId: String) {
         // Define the view annotation
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             // Specify the layout resource id
-            resId = R.layout.layout_annotation,
-
+        resId = R.layout.layout_annotation,
             // Set any view annotation options
             options = viewAnnotationOptions {
                 geometry(point)
             }
         )
-        val binding = LayoutAnnotationBinding.bind(viewAnnotation)
-//        LayoutAnnotationBinding.bind(viewAnnotation)
-        binding.annotationRoute.text = string
-
+        val textViewAnnotation= viewAnnotation.findViewById<TextView>(R.id.annotationRoute)
+        textViewAnnotation.text=routeId
     }
 
 
