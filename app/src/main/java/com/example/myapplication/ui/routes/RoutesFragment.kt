@@ -40,15 +40,31 @@ class RoutesFragment : Fragment() {
         autoTransitNum.threshold=1
 
 
-        //Check Internal Storage exist
+        //Create file in internal storage
         val filename = "myRoute"
+        context?.openFileOutput(filename, Context.MODE_PRIVATE).use {      }
+
+        // Create the file and write some test data
+        context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
+            val testData = listOf("One", "Two", "Three")
+            it.write(testData.joinToString("\n").toByteArray())
+        }
+
         val fileContents : List<String>
-        if(fileExist(filename)){
-            fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+        fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
                 lines.map {it.toString() }
                     .filterNotNull()
                     .toList()
             } ?: emptyList()
+
+        if (fileContents.isNotEmpty()) {
+            // Test data is in 'fileContents'
+            for (line in fileContents) {
+                println(line)
+            }
+        } else {
+            // The file is empty or doesn't exist
+            println("File is empty or doesn't exist.")
         }
 
         //
@@ -58,16 +74,18 @@ class RoutesFragment : Fragment() {
            // var routeNumber : String;
             routeNumber=(adapter.getItem(position)?:"").toString()
             binding.textViewMyroutes.text = routeNumber
-            if(routeNumber!=null){
 
 
-                val fileContents = routeNumber
-
-
-                context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
-                    it?.write(fileContents?.toByteArray())
-                }
-            }
+//            if(routeNumber!=null){
+//
+//
+//                val fileContents = routeNumber
+//
+//
+//                context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
+//                    it?.write(fileContents?.toByteArray())
+//                }
+//            }
 
         }
 
