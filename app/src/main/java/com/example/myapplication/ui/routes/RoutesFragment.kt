@@ -2,6 +2,7 @@ package com.example.myapplication.ui.routes
 
 import android.content.Context
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,8 @@ class RoutesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
         _binding = FragmentRoutesBinding.inflate(inflater, container, false)
         val root: View = binding.root

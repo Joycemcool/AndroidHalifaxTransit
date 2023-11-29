@@ -7,7 +7,9 @@ package com.example.myapplication.ui.map
 //ViewAnnotationBasic
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.hardware.camera2.CameraExtensionSession.StillCaptureLatency
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +31,11 @@ import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
 import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.net.URL
 
 //End example
@@ -55,6 +62,8 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
     //From view annotation example
         super.onCreate(savedInstanceState)
@@ -103,9 +112,9 @@ class MapFragment : Fragment() {
         }
 
 
-
         // Create view annotation manager
         viewAnnotationManager = binding.mapView.viewAnnotationManager
+        viewAnnotationManager.removeAllViewAnnotations()
         mapboxMap = binding.mapView.getMapboxMap().apply {
             // Load a map style
             loadStyleUri(Style.MAPBOX_STREETS) {
@@ -114,24 +123,30 @@ class MapFragment : Fragment() {
                 val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
                 val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
 
-                for (entity in feed.entityList) {
-                    if(entity.hasVehicle()){
-                        val tripUpdate = entity.vehicle.trip
-                        val longitude = entity.vehicle.position.longitude
-                        val latitude = entity.vehicle.position.latitude
-                        val routeId = entity.vehicle.trip.routeId;
-                        val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
+//                GlobalScope.async {
+//                    delay(20000)
+                    for (entity in feed.entityList) {
+                        if(entity.hasVehicle()){
+                            val tripUpdate = entity.vehicle.trip
+                            val longitude = entity.vehicle.position.longitude
+                            val latitude = entity.vehicle.position.latitude
+                            val routeId = entity.vehicle.trip.routeId;
+                            val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
 
-                        // Check if routeId exists in fileContents
-                        val isRouteIdExist = fileContents.contains(routeId)
-                        if (isRouteIdExist){
-                            addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
-                        }else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
+                            // Check if routeId exists in fileContents
+                            val isRouteIdExist = fileContents.contains(routeId)
+                            if (isRouteIdExist){
+                                addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
+                            }else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
+                            }
+
                         }
+
                     }
+
                 }
             }
-        }
+//        }
 
 
         return root
@@ -158,6 +173,44 @@ class MapFragment : Fragment() {
         textViewAnnotation.text=routeId
     }
 
+
+    suspend fun updateRoute(fileContents : List<String>) = coroutineScope {
+        launch {
+            delay(10000)
+            mapboxMap = binding.mapView.getMapboxMap().apply {
+                // Load a map style
+                loadStyleUri(Style.MAPBOX_STREETS) {
+
+                    // Add the view annotation at the center point
+                    val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+                    val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
+
+                    GlobalScope.async {
+                        delay(20000)
+                        for (entity in feed.entityList) {
+                            if(entity.hasVehicle()){
+                                val tripUpdate = entity.vehicle.trip
+                                val longitude = entity.vehicle.position.longitude
+                                val latitude = entity.vehicle.position.latitude
+                                val routeId = entity.vehicle.trip.routeId;
+                                val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
+
+                                // Check if routeId exists in fileContents
+                                val isRouteIdExist = fileContents.contains(routeId)
+                                if (isRouteIdExist){
+                                    addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
+                                }else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
+                                }
+
+                            }
+
+                        }
+
+                    }
+                }
+            }
+        }
+    }
 
 
     override fun onDestroyView() {
