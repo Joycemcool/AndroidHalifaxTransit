@@ -91,30 +91,36 @@ class MapFragment : Fragment() {
         mapView?.getMapboxMap()?.setCamera(initialCameraOptions);
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
-        //Retrieve myRoutes file content from internal storage
+//        Retrieve myRoutes file content from internal storage
         val filename = "myRoute"
         //Read content if file exist
-        val fileContents : List<String>
-        fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
-            lines.map {it.toString() }
-                .filterNotNull()
-                .toList()
-        } ?: emptyList()
+//        val fileContents : String?
+//        fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+//            lines.fold(""){some,text ->
+//                "$some\n$text"
+//            }
+//        }
+//        context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+//            lines.fold("") { some, text ->
+//                "$some\n$text"
+//            }
+//        }
 
 
 
-        if (fileContents.isNotEmpty()) {
-            // Test data is in 'fileContents'
-            for (line in fileContents) {
-                val textView = TextView(requireContext())
-
-            }
-        }
+//
+//        if (fileContents.isNotEmpty()) {
+//            // Test data is in 'fileContents'
+//            for (line in fileContents) {
+//                val textView = TextView(requireContext())
+//
+//            }
+//        }
 
 
         // Create view annotation manager
         viewAnnotationManager = binding.mapView.viewAnnotationManager
-        viewAnnotationManager.removeAllViewAnnotations()
+//        viewAnnotationManager.removeAllViewAnnotations()
         mapboxMap = binding.mapView.getMapboxMap().apply {
             // Load a map style
             loadStyleUri(Style.MAPBOX_STREETS) {
@@ -132,13 +138,14 @@ class MapFragment : Fragment() {
                             val latitude = entity.vehicle.position.latitude
                             val routeId = entity.vehicle.trip.routeId;
                             val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
-
+                            addViewAnnotation(point,routeId)
                             // Check if routeId exists in fileContents
-                            val isRouteIdExist = fileContents.contains(routeId)
-                            if (isRouteIdExist){
-                                addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
-                            }else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
-                            }
+//                            val isRouteIdExist = fileContents.contains(routeId)
+//                            if (isRouteIdExist){
+//                                addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
+//                            }
+//                            else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
+//                            }
 
                         }
 
@@ -146,7 +153,7 @@ class MapFragment : Fragment() {
 
                 }
             }
-//        }
+
 
 
         return root
@@ -156,7 +163,8 @@ class MapFragment : Fragment() {
     //Add a view annotation to the mapview
     //
 
-    private fun addViewAnnotation(point: Point, routeId: String, drawableId : Int) {
+//    private fun addViewAnnotation(point: Point, routeId: String, drawableId : Int) {
+private fun addViewAnnotation(point: Point, routeId: String) {
         // Define the view annotation
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             // Specify the layout resource id
@@ -166,51 +174,51 @@ class MapFragment : Fragment() {
                 geometry(point)
             }
         )
-        val backgroudView =viewAnnotation.findViewById<ConstraintLayout>(R.id.annotationLayout)
-        val backgroudColor = ContextCompat.getDrawable(requireContext(),drawableId)
-        backgroudView.background = backgroudColor
+//        val backgroudView =viewAnnotation.findViewById<ConstraintLayout>(R.id.annotationLayout)
+//        val backgroudColor = ContextCompat.getDrawable(requireContext(),drawableId)
+//        backgroudView.background = backgroudColor
         val textViewAnnotation= viewAnnotation.findViewById<TextView>(R.id.annotationRoute)
         textViewAnnotation.text=routeId
     }
 
 
-    suspend fun updateRoute(fileContents : List<String>) = coroutineScope {
-        launch {
-            delay(10000)
-            mapboxMap = binding.mapView.getMapboxMap().apply {
-                // Load a map style
-                loadStyleUri(Style.MAPBOX_STREETS) {
-
-                    // Add the view annotation at the center point
-                    val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
-                    val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
-
-                    GlobalScope.async {
-                        delay(20000)
-                        for (entity in feed.entityList) {
-                            if(entity.hasVehicle()){
-                                val tripUpdate = entity.vehicle.trip
-                                val longitude = entity.vehicle.position.longitude
-                                val latitude = entity.vehicle.position.latitude
-                                val routeId = entity.vehicle.trip.routeId;
-                                val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
-
-                                // Check if routeId exists in fileContents
-                                val isRouteIdExist = fileContents.contains(routeId)
-                                if (isRouteIdExist){
-                                    addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
-                                }else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
-                                }
-
-                            }
-
-                        }
-
-                    }
-                }
-            }
-        }
-    }
+//    suspend fun updateRoute(fileContents : List<String>) = coroutineScope {
+//        launch {
+//            delay(10000)
+//            mapboxMap = binding.mapView.getMapboxMap().apply {
+//                // Load a map style
+//                loadStyleUri(Style.MAPBOX_STREETS) {
+//
+//                    // Add the view annotation at the center point
+//                    val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+//                    val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
+//
+//                    GlobalScope.async {
+//                        delay(20000)
+//                        for (entity in feed.entityList) {
+//                            if(entity.hasVehicle()){
+//                                val tripUpdate = entity.vehicle.trip
+//                                val longitude = entity.vehicle.position.longitude
+//                                val latitude = entity.vehicle.position.latitude
+//                                val routeId = entity.vehicle.trip.routeId;
+//                                val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
+//
+//                                // Check if routeId exists in fileContents
+//                                val isRouteIdExist = fileContents.contains(routeId)
+//                                if (isRouteIdExist){
+//                                    addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
+//                                }else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
+//                                }
+//
+//                            }
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     override fun onDestroyView() {
@@ -236,8 +244,6 @@ class MapFragment : Fragment() {
         super.onDestroy()
         mapView?.onDestroy()
     }
-
-
 
 
 }

@@ -56,27 +56,6 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.navigation_map, bundle)
     }
 
-//    private fun readTransitNumbersFromFile(fileName: String): List<String> {
-//    val transitNumbers = mutableListOf<String>()
-//
-//    try {
-//        // Open the file from the assets folder
-//        val inputStream = assets.open(fileName)
-//        val reader = BufferedReader(InputStreamReader(inputStream))
-//
-//        // Read each line, extract the first number, and add it to the list
-//        reader.useLines { lines ->
-//            lines.forEach { line ->
-//                val transitNumber = line.split(",")[0].trim()
-//                transitNumbers.add(transitNumber)
-//            }
-//        }
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//    }
-//
-//    return transitNumbers
-//}
 
 }
 

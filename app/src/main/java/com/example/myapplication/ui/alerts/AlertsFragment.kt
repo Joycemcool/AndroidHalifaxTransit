@@ -34,27 +34,27 @@ class AlertsFragment : Fragment() {
 //        binding.textNotifications.text = "This is the Alerts fragment"
 //        val textView: TextView = binding.textNotifications
 
-        val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
+        val url = URL("https://gtfs.halifax.ca/realtime/Alert/Alerts.pb")
         val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
 
         for (entity in feed.entityList) {
             Log.i("alert test", "Feed in")
-                if(entity.hasAlert()){
-                    val alert = entity.alert.headerText.toString()
+//                if(entity.hasAlert()){
+                    val alert = entity.alert.descriptionText.toString()
                     val linearLayoutAlerts: LinearLayout = binding.linearLayoutAlerts
                     Log.i("alert test", alert)
                     val textView = TextView(requireContext())
                     textView.text = alert
                     linearLayoutAlerts.addView(textView)
                 }
-                else{
-                    val linearLayoutAlerts: LinearLayout = binding.linearLayoutAlerts
-                    val textView = TextView(requireContext())
-                    textView.text = "No alert, good luck"
-                    linearLayoutAlerts.addView(textView)
-                }
+//                else{
+//                    val linearLayoutAlerts: LinearLayout = binding.linearLayoutAlerts
+//                    val textView = TextView(requireContext())
+//                    textView.text = "No alert, good luck"
+//                    linearLayoutAlerts.addView(textView)
+//                }
 
-        }
+//        }
 
             return root
         }
