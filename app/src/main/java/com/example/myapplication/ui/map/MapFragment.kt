@@ -92,14 +92,13 @@ class MapFragment : Fragment() {
         mapView?.getMapboxMap()?.loadStyleUri(Style.MAPBOX_STREETS)
 
 //        Retrieve myRoutes file content from internal storage
-        val filename = "myRoute"
+        val filename = "routesFile"
         //Read content if file exist
-//        val fileContents : String?
-//        fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
-//            lines.fold(""){some,text ->
-//                "$some\n$text"
-//            }
-//        }
+        val fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+            lines.fold(""){some,text ->
+                "$some\n$text"
+            }
+        }
 //        context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
 //            lines.fold("") { some, text ->
 //                "$some\n$text"
@@ -138,14 +137,14 @@ class MapFragment : Fragment() {
                             val latitude = entity.vehicle.position.latitude
                             val routeId = entity.vehicle.trip.routeId;
                             val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
-                            addViewAnnotation(point,routeId)
+//                            addViewAnnotation(point,routeId)
                             // Check if routeId exists in fileContents
-//                            val isRouteIdExist = fileContents.contains(routeId)
-//                            if (isRouteIdExist){
-//                                addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
-//                            }
-//                            else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
-//                            }
+                            val isRouteIdExist = fileContents?.contains(routeId)
+                            if (isRouteIdExist == true){
+                                addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
+                            }
+                            else{ addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
+                            }
 
                         }
 
@@ -163,8 +162,8 @@ class MapFragment : Fragment() {
     //Add a view annotation to the mapview
     //
 
-//    private fun addViewAnnotation(point: Point, routeId: String, drawableId : Int) {
-private fun addViewAnnotation(point: Point, routeId: String) {
+    private fun addViewAnnotation(point: Point, routeId: String, drawableId : Int) {
+//private fun addViewAnnotation(point: Point, routeId: String) {
         // Define the view annotation
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             // Specify the layout resource id
@@ -174,9 +173,9 @@ private fun addViewAnnotation(point: Point, routeId: String) {
                 geometry(point)
             }
         )
-//        val backgroudView =viewAnnotation.findViewById<ConstraintLayout>(R.id.annotationLayout)
-//        val backgroudColor = ContextCompat.getDrawable(requireContext(),drawableId)
-//        backgroudView.background = backgroudColor
+        val backgroudView =viewAnnotation.findViewById<ConstraintLayout>(R.id.annotationLayout)
+        val backgroudColor = ContextCompat.getDrawable(requireContext(),drawableId)
+        backgroudView.background = backgroudColor
         val textViewAnnotation= viewAnnotation.findViewById<TextView>(R.id.annotationRoute)
         textViewAnnotation.text=routeId
     }

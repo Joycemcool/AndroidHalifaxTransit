@@ -43,13 +43,14 @@ class RoutesFragment : Fragment() {
 
         //Create empty file in internal storage if it doesn't exist
 
-        val filename = "my"
-//        Read content if file exist
-        val defaultContents = "Hello, world!"
-                    context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
-            it?.write(defaultContents.toByteArray())
-        }
-        val fileContents  = context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+        val filename = "routesFile"
+//        Write content if file exist
+//        val defaultContents = "1, 2"
+//                    context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
+//            it?.write(defaultContents.toByteArray())
+//        }
+
+        var fileContents  = context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
             lines.fold("") { some, text ->
                 "$some\n$text"
             }
@@ -70,10 +71,10 @@ class RoutesFragment : Fragment() {
             if (fileContents.isNotEmpty()) {
                 // Test data is in 'fileContents'
     //            for (line in fileContents) {
-                var contentArray = fileContents.split(",").toTypedArray()
+                val contentArray = fileContents.split(",").toTypedArray()
                 for(item in contentArray){
                     val textView = TextView(requireContext())
-                    textView.text = fileContents
+                    textView.text = item
                     linearLayoutMyRoutes.addView(textView)
                 }
 
@@ -89,10 +90,13 @@ class RoutesFragment : Fragment() {
         autoTransitNum.setOnItemClickListener {parent,view, position,id ->
            // var routeNumber : String;
             routeNumber=(adapter.getItem(position)?:"").toString()
+            fileContents += "," + routeNumber
             binding.buttonAdd.setOnClickListener {
+                //Write updated string into file
                 context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
-                    it.write(routeNumber!!.toByteArray())}
-
+                    it.write(fileContents!!.toByteArray())
+                }
+                //Add text view to linearLayout
                     val textView = TextView(requireContext())
                     textView.text = routeNumber
                     linearLayoutMyRoutes.addView(textView)
