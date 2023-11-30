@@ -37,6 +37,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.net.URL
+import java.util.Timer
 
 //End example
 
@@ -51,6 +52,9 @@ class MapFragment : Fragment() {
     private lateinit var viewAnnotationManager: ViewAnnotationManager
     private val viewAnnotationViews = mutableListOf<View>()
     //end
+
+    //Add timer
+    private val timer = Timer()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -70,8 +74,6 @@ class MapFragment : Fragment() {
 
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-//        view = inflater.inflate(R.layout.layout_annotation, container, false)
 
 //        binding.textHome.text = "This is the Home fragment"
 
@@ -93,33 +95,16 @@ class MapFragment : Fragment() {
 
 //        Retrieve myRoutes file content from internal storage
         val filename = "routesFile"
-        //Read content if file exist
+
         val fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
             lines.fold(""){some,text ->
                 "$some\n$text"
             }
         }
-//        context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
-//            lines.fold("") { some, text ->
-//                "$some\n$text"
-//            }
-//        }
-
-
-
-//
-//        if (fileContents.isNotEmpty()) {
-//            // Test data is in 'fileContents'
-//            for (line in fileContents) {
-//                val textView = TextView(requireContext())
-//
-//            }
-//        }
 
 
         // Create view annotation manager
         viewAnnotationManager = binding.mapView.viewAnnotationManager
-//        viewAnnotationManager.removeAllViewAnnotations()
         mapboxMap = binding.mapView.getMapboxMap().apply {
             // Load a map style
             loadStyleUri(Style.MAPBOX_STREETS) {
@@ -163,6 +148,7 @@ class MapFragment : Fragment() {
     //
 
     private fun addViewAnnotation(point: Point, routeId: String, drawableId : Int) {
+
 //private fun addViewAnnotation(point: Point, routeId: String) {
         // Define the view annotation
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
@@ -180,8 +166,9 @@ class MapFragment : Fragment() {
         textViewAnnotation.text=routeId
     }
 
+// Put add annotation view in a function
 
-//    suspend fun updateRoute(fileContents : List<String>) = coroutineScope {
+//   private fun updateRoute(fileContents : List<String>) = coroutineScope {
 //        launch {
 //            delay(10000)
 //            mapboxMap = binding.mapView.getMapboxMap().apply {
@@ -192,8 +179,6 @@ class MapFragment : Fragment() {
 //                    val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
 //                    val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
 //
-//                    GlobalScope.async {
-//                        delay(20000)
 //                        for (entity in feed.entityList) {
 //                            if(entity.hasVehicle()){
 //                                val tripUpdate = entity.vehicle.trip
