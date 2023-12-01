@@ -43,7 +43,10 @@ class RoutesFragment : Fragment() {
 
         //Create empty file in internal storage if it doesn't exist
 
+
         val filename = "routesFile"
+        val file = File(context?.filesDir, filename)
+
 //        Write content if file exist
 //        val defaultContents = "1, 2"
 //                    context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
