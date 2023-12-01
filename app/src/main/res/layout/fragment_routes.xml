@@ -46,13 +46,10 @@
 
     <ScrollView
         android:id="@+id/scrollViewVertically"
-        android:layout_width="134dp"
-        android:layout_height="0dp"
+        android:layout_width="131dp"
+        android:layout_height="107dp"
         android:layout_marginStart="75dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="202dp"
-        android:layout_marginBottom="52dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="205dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMyroutes">
@@ -60,7 +57,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutMyRoutes"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" />
     </ScrollView>
 

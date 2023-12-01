@@ -39,9 +39,23 @@ class AlertsFragment : Fragment() {
             Log.i("alert test", "Feed in")
 //                if(entity.hasAlert()){
                     val alert = entity.alert.descriptionText.toString()
+                    var cleanedAlert = alert
+                        .replace("translation","")
+                        .replace("{","'")
+                        .replace("}","")
+                        .replace("'","")
+//                        .replace("\\r\\n","")
+                        .replace("\\r","")
+                        .replace("\\n","")
+                        .replace("text","Alert")
+                        .replace((Regex("language\\s*:\\s*\"en\"")),"\n")
+                        .trim()
+
+                    cleanedAlert +="\n"
                     val linearLayoutAlerts: LinearLayout = binding.linearLayoutAlerts
                     val textView = TextView(requireContext())
-                    textView.text = alert
+                    textView.textSize =18f
+                    textView.text = cleanedAlert
                     linearLayoutAlerts.addView(textView)
                 }
 //                else{

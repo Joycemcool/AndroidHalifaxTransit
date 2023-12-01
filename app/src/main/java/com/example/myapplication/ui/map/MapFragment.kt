@@ -10,6 +10,8 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.hardware.camera2.CameraExtensionSession.StillCaptureLatency
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.StrictMode
 import android.util.Log
 import android.view.LayoutInflater
@@ -98,20 +100,32 @@ class MapFragment : Fragment() {
 //        Retrieve myRoutes file content from internal storage
         val filename = "routesFile"
         val file = File(context?.filesDir, filename)
+        var fileContents ="";
 
-//        val defaulContent ="1,2,7,7A"
-//        context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
-//            it.write(defaulContent!!.toByteArray())
-//        }
-        val fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
-            lines.fold(""){some,text ->
-                "$some\n$text"
-            }
+        if(file.exists()){
+            fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+                lines.fold(""){some,text ->
+                    "$some\n$text"
+                }
+            }.toString()
         }
 
-//        if (fileContents != null) {
-//            updateRoute(fileContents)
-//        };
+        // Create the Handler object (on the main thread by default)
+//        val handler = Handler(Looper.getMainLooper())
+//
+//        // Define the code block to be executed
+//        val runnableCode: Runnable = object : Runnable {
+//            override fun run() {
+//
+//                // Code geoes here
+//                updateRoute(fileContents)
+//                // Repeat this the same runnable code block again another 30 seconds. 'this' is referencing the Runnable object
+//                handler.postDelayed(this, 30000)
+//            }
+//        }
+
+// Start the initial runnable task by posting through the handler
+//        handler.post(runnableCode)
 
 //         Create view annotation manager
         viewAnnotationManager = binding.mapView.viewAnnotationManager
@@ -143,58 +157,9 @@ class MapFragment : Fragment() {
                 }
             }
 
-//        val updateTask = fileContents?.let { updateViewAnnotation(it,this) }
-//        timer.schedule(updateTask, 0,20000)
 
         return root
     }
-
-    //
-    //Tell activity to run on add view annotation thread
-    //
-//    class updateViewAnnotation(private val fileContents: String, private val mapFragment:MapFragment): TimerTask() {
-//
-//        override fun  run(){
-//
-//            mapFragment.viewAnnotationManager = mapFragment.binding.mapView.viewAnnotationManager
-//            mapFragment.mapboxMap = mapFragment.binding.mapView.getMapboxMap().apply {
-//                loadStyleUri(Style.MAPBOX_STREETS) {
-//                    val viewAnnotationsToRemove = ArrayList<View>()
-////                    mapFragment.viewAnnotationManager.removeViewAnnotation(viewAnnotationOptions {  })
-//                    // Add the view annotation at the center point
-//                    val url = URL("https://gtfs.halifax.ca/realtime/Vehicle/VehiclePositions.pb")
-//                    val feed = GtfsRealtime.FeedMessage.parseFrom(url.openStream())//cannot proceed feed
-//
-//                    for (entity in feed.entityList) {
-//                        if(entity.hasVehicle()){
-////                            val tripUpdate = entity.vehicle.trip
-//                            val longitude = entity.vehicle.position.longitude
-//                            val latitude = entity.vehicle.position.latitude
-//                            val routeId = entity.vehicle.trip.routeId;
-//                            val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
-//
-//                            // Check if routeId exists in fileContents
-//                            val isRouteIdExist = fileContents.contains(routeId)
-//                            if (isRouteIdExist){
-//                                mapFragment.viewAnnotationManager.getViewAnnotationByFeatureId(routeId)
-//                                    ?.let { it1 -> viewAnnotationsToRemove.add(it1) }
-//                                mapFragment.addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
-//                            }else{
-//                                mapFragment.viewAnnotationManager.getViewAnnotationByFeatureId(routeId)
-//                                    ?.let { it1 -> viewAnnotationsToRemove.add(it1) }
-//                                mapFragment.addViewAnnotation(point,routeId,R.drawable.rounded_corner_view)
-//                            }
-//                        }
-//                    }
-//                    for(viewAnnotationToRemoved in viewAnnotationsToRemove) {
-//                        mapFragment.viewAnnotationManager.removeViewAnnotation(viewAnnotationToRemoved)
-//                    }
-//                }
-//            }
-//        }
-//
-//    }//End updateViewAnnotation class
-
 
     //
     //Add a view annotation to the mapview

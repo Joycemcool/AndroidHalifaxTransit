@@ -43,52 +43,38 @@ class RoutesFragment : Fragment() {
 
         //Create empty file in internal storage if it doesn't exist
 
-
         val filename = "routesFile"
         val file = File(context?.filesDir, filename)
-
-//        Write content if file exist
-//        val defaultContents = "1, 2"
-//                    context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
-//            it?.write(defaultContents.toByteArray())
+        var fileContents = ""
+//        context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
+//            it.write(fileContents!!.toByteArray())
 //        }
-
-        var fileContents  = context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
-            lines.fold("") { some, text ->
-                "$some\n$text"
-            }
+        if(file.exists()){
+            fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
+                lines.fold(""){some,text ->
+                    "$some\n$text"
+                }
+            }.toString()
         }
-//            context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
-//            it?.write(fileContents.toByteArray())
-//        }
-//        fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
-//                lines.map {it.toString() }
-//                    .filterNotNull()
-//                    .toList()
-//            } ?: emptyList()
 
-//
         val linearLayoutMyRoutes: LinearLayout = binding.linearLayoutMyRoutes
 
-        if (fileContents != null) {
-            if (fileContents.isNotEmpty()) {
-                // Test data is in 'fileContents'
-    //            for (line in fileContents) {
-                val contentArray = fileContents.split(",").toTypedArray()
-                for(item in contentArray){
-                    val textView = TextView(requireContext())
-                    textView.text = item
-                    linearLayoutMyRoutes.addView(textView)
-                }
+        if (fileContents.isNotEmpty()) {
+            val contentArray = fileContents.split(",").toTypedArray()
+            for(item in contentArray){
+                val textView = TextView(requireContext())
+                textView.text = item
+                textView.textSize=18f
 
-    //            }
-            }else{
-                context?.openFileOutput(filename, Context.MODE_PRIVATE).use {      }
+                linearLayoutMyRoutes.addView(textView)
             }
+        }else{
+            context?.openFileOutput(filename, Context.MODE_PRIVATE).use {      }
         }
 
         //
         //SetOnItemClickListener for autocompleteTextView
+        //
 
         autoTransitNum.setOnItemClickListener {parent,view, position,id ->
            // var routeNumber : String;
@@ -102,10 +88,11 @@ class RoutesFragment : Fragment() {
                 //Add text view to linearLayout
                     val textView = TextView(requireContext())
                     textView.text = routeNumber
+                    textView.textSize=18f
+
                     linearLayoutMyRoutes.addView(textView)
                 }
             }
-
 
         return root
     }
@@ -115,8 +102,4 @@ class RoutesFragment : Fragment() {
         _binding = null
     }
 
-
-}
-
-//https://developer.android.com/reference/kotlin/java/util/Timer
-//
+}//End RoutesFragment
