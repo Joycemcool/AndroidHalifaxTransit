@@ -144,7 +144,7 @@ class MapFragment : Fragment() {
                             val routeId = entity.vehicle.trip.routeId;
                             val point : Point = Point.fromLngLat(longitude.toDouble(),latitude.toDouble())
                             // Check if routeId exists in fileContents
-                            val isRouteIdExist = fileContents?.contains(routeId)
+                            val isRouteIdExist = fileContents?.split(",")?.contains(routeId)
                             if (isRouteIdExist == true){
                                 addViewAnnotation(point, routeId,R.drawable.rounded_corner_view_highlighted )
                             }

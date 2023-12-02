@@ -45,10 +45,15 @@ class RoutesFragment : Fragment() {
 
         val filename = "routesFile"
         val file = File(context?.filesDir, filename)
+        val defaultContent = ""
         var fileContents = ""
-//        context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
-//            it.write(fileContents!!.toByteArray())
-//        }
+
+        binding.btnDeleteRoutes.setOnClickListener(){
+                    context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
+            it.write(defaultContent!!.toByteArray())
+             }
+        }
+
         if(file.exists()){
             fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
                 lines.fold(""){some,text ->

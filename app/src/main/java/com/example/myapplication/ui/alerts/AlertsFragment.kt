@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.alerts
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ class AlertsFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val colors = arrayOf("#fdfcdc", "#fed9b7", "#00afb9")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +56,8 @@ class AlertsFragment : Fragment() {
                     cleanedAlert +="\n"
                     val linearLayoutAlerts: LinearLayout = binding.linearLayoutAlerts
                     val textView = TextView(requireContext())
+                    val randomColor = colors.random()
+                    textView.setBackgroundColor(Color.parseColor(randomColor))
                     textView.textSize =18f
                     textView.text = cleanedAlert
                     linearLayoutAlerts.addView(textView)
