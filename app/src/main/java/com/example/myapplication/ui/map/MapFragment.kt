@@ -184,9 +184,7 @@ class MapFragment : Fragment() {
         textViewAnnotation.text=routeId
     }
 
-//    private fun removeViewAnnotation(){
-//
-//    }
+
     // Put add annotation view in a function
 
    private fun updateRoute(fileContents : String) {

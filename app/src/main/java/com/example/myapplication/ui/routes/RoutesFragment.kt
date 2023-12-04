@@ -48,12 +48,6 @@ class RoutesFragment : Fragment() {
         val defaultContent = ""
         var fileContents = ""
 
-        binding.btnDeleteRoutes.setOnClickListener(){
-                    context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
-            it.write(defaultContent!!.toByteArray())
-             }
-        }
-
         if(file.exists()){
             fileContents= context?.openFileInput(filename)?.bufferedReader()?.useLines { lines ->
                 lines.fold(""){some,text ->
@@ -64,17 +58,31 @@ class RoutesFragment : Fragment() {
 
         val linearLayoutMyRoutes: LinearLayout = binding.linearLayoutMyRoutes
 
+//      Delete Route Button functionality
+        binding.btnDeleteRoutes.setOnClickListener(){
+            context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
+            it.write(defaultContent!!.toByteArray())
+             }
+            //Set fileContent empty
+            fileContents=""
+            linearLayoutMyRoutes.removeAllViews()
+        }
+
+        //Populate ScrollView
         if (fileContents.isNotEmpty()) {
             val contentArray = fileContents.split(",").toTypedArray()
             for(item in contentArray){
                 val textView = TextView(requireContext())
                 textView.text = item
                 textView.textSize=18f
-
                 linearLayoutMyRoutes.addView(textView)
             }
         }else{
-            context?.openFileOutput(filename, Context.MODE_PRIVATE).use {      }
+            context?.openFileOutput(filename, Context.MODE_PRIVATE).use {
+                if (it != null) {
+                    it.write(defaultContent!!.toByteArray())
+                }
+            }
         }
 
         //
