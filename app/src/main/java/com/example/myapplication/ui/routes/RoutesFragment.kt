@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.transition.Visibility.Mode
 import com.example.myapplication.R
@@ -92,19 +93,27 @@ class RoutesFragment : Fragment() {
         autoTransitNum.setOnItemClickListener {parent,view, position,id ->
            // var routeNumber : String;
             routeNumber=(adapter.getItem(position)?:"").toString()
-            fileContents += "," + routeNumber
-            binding.buttonAdd.setOnClickListener {
-                //Write updated string into file
-                context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
-                    it.write(fileContents!!.toByteArray())
-                }
-                //Add text view to linearLayout
+            val routeExist =false;
+            if (!fileContents.contains(routeNumber!!,ignoreCase = true)){
+                fileContents += ",$routeNumber"
+                binding.buttonAdd.setOnClickListener {
+                    //Write updated string into file
+
+                    context?.openFileOutput(filename, Context.MODE_PRIVATE)?.use {
+                        it.write(fileContents!!.toByteArray())
+                    }
+                    //Add text view to linearLayout
                     val textView = TextView(requireContext())
                     textView.text = routeNumber
                     textView.textSize=18f
 
                     linearLayoutMyRoutes.addView(textView)
                 }
+            }
+            else{
+                Toast.makeText(context, "Route already in favorites", Toast.LENGTH_SHORT).show();
+            }
+
             }
 
         return root
